@@ -1,0 +1,24 @@
+{
+    "name": "Read Page Extensions",
+    "description": "Reads the content of the current page and sends it to firebase",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage"
+    ],
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "action": {
+    "default_title": "Click to run",
+    "default_icon": {              
+      "16": "images/img16.png",   
+      "24": "images/img24.png",  
+      "32": "images/img32.png"    
+    }
+    }
+  }
+  

@@ -1,0 +1,2 @@
+(()=>{var r={131:(r,e,t)=>{t(131)}},e={};function t(o){var c=e[o];if(void 0!==c)return c.exports;var i=e[o]={exports:{}};return r[o](i,i.exports,t),i.exports}(()=>{"use strict";t(131),chrome.action.onClicked.addListener((r=>{chrome.scripting.executeScript({target:{tabId:r.id},files:["webscraper.js"]},(()=>{chrome.runtime.lastError?console.error("Script injection failed: ",chrome.runtime.lastError.message):console.log("Script injected successfully")}))}))})()})();
+//# sourceMappingURL=background.js.map
