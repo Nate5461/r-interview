@@ -29,9 +29,12 @@ const pageUrl = window.location.href;
 // Get the entire text content of the page
 const pageText = document.body.innerText;
 
+const pageHTML = document.documentElement.innerHTML;
+
 // Log the page URL and text content to the console to ensure it's working
 console.log("Page URL: ", pageUrl);
 console.log("Page Text: ", pageText);
+console.log("Page HTML: ", pageHTML); 
 
 // Check if the page URL already exists in the Firestore collection
 (async () => {
@@ -46,7 +49,8 @@ console.log("Page Text: ", pageText);
     } else {
       const docRef = await addDoc(col, {
         page: pageUrl,
-        content: pageText
+        content_txt: pageText,
+        content_html: pageHTML
       });
       console.log("Document written with ID: ", docRef.id);
     }
