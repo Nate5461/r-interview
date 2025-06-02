@@ -29,12 +29,35 @@ const pageUrl = window.location.href;
 // Get the entire text content of the page
 const pageText = document.body.innerText;
 
-const pageHTML = document.documentElement.innerHTML;
+const pageHTML = document.body.innerHTML;
+
+
+// Get all rows in the table
+const rows = Array.from(document.querySelectorAll("tr")).map(tr => {
+  return Array.from(tr.querySelectorAll("td, th")).map(td => td.innerText).filter(row => row.length > 0);
+});
+
+// Convert rows to array of objects using the first row as headers
+let tableObjects = [];
+if (rows.length > 1) {
+  const headers = rows[0];
+  tableObjects = rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((header, i) => {
+      obj[header] = row[i] || "";
+    });
+    return obj;
+  });
+}
 
 // Log the page URL and text content to the console to ensure it's working
 console.log("Page URL: ", pageUrl);
 console.log("Page Text: ", pageText);
 console.log("Page HTML: ", pageHTML); 
+console.log("Table rows: ", rows);
+console.log("Table objects: ", tableObjects);
+
+
 
 // Check if the page URL already exists in the Firestore collection
 (async () => {
@@ -47,12 +70,24 @@ console.log("Page HTML: ", pageHTML);
       console.log("Page URL already exists in Firestore");
       return;
     } else {
-      const docRef = await addDoc(col, {
-        page: pageUrl,
-        content_txt: pageText,
-        content_html: pageHTML
-      });
-      console.log("Document written with ID: ", docRef.id);
+      if (rows.length > 1) {
+        console.log("Table rows found, processing...");
+        const docRef = await addDoc(col, {
+          page: pageUrl,
+          table: tableObjects,
+          content_txt: pageText,
+          content_html: pageHTML
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } else {
+        console.log("No table rows found, proceeding to add page content.");
+        const docRef = await addDoc(col, {
+          page: pageUrl,
+          content_txt: pageText,
+          content_html: pageHTML
+        });
+        console.log("Document written with ID: ", docRef.id);
+      }
     }
   } catch (error) {
     console.error("Error adding or checking document: ", error);
